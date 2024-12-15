@@ -1,0 +1,95 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Test 1
+      id: test-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 1
+        setup-command: npm install
+        command: npm run test1
+        timeout: 10
+    - name: Test 2
+      id: test-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 2
+        setup-command: npm install
+        command: npm run test2
+        timeout: 10
+        max-score: 1
+    - name: Test 3
+      id: test-3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 3
+        setup-command: npm install
+        command: npm run test3
+        timeout: 10
+        max-score: 1
+    - name: Test 4
+      id: test-4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 4
+        setup-command: npm install
+        command: npm run test4
+        timeout: 10
+        max-score: 1
+    - name: Test 5
+      id: test-5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 5
+        setup-command: npm install
+        command: npm run test5
+        timeout: 10
+    - name: Test 6
+      id: test-6
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 6
+        setup-command: npm install
+        command: npm run test6
+        timeout: 10
+    - name: Test 7 (bonus)
+      id: test-7-bonus
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 7 (bonus)
+        setup-command: npm install
+        command: npm run test7
+        timeout: 10
+    - name: Test 8 (bonus)
+      id: test-8-bonus
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Test 8 (bonus)
+        setup-command: npm install
+        command: npm run test8
+        timeout: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TEST-1_RESULTS: "${{steps.test-1.outputs.result}}"
+        TEST-2_RESULTS: "${{steps.test-2.outputs.result}}"
+        TEST-3_RESULTS: "${{steps.test-3.outputs.result}}"
+        TEST-4_RESULTS: "${{steps.test-4.outputs.result}}"
+        TEST-5_RESULTS: "${{steps.test-5.outputs.result}}"
+        TEST-6_RESULTS: "${{steps.test-6.outputs.result}}"
+        TEST-7-BONUS_RESULTS: "${{steps.test-7-bonus.outputs.result}}"
+        TEST-8-BONUS_RESULTS: "${{steps.test-8-bonus.outputs.result}}"
+      with:
+        runners: test-1,test-2,test-3,test-4,test-5,test-6,test-7-bonus,test-8-bonus
